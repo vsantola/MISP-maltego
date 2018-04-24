@@ -7,9 +7,9 @@
 #############################################
 
 # MISP BASE URL
-BASE_URL = 'https://misp.maltracker.net'
+BASE_URL = ''
 # API KEY
-API_KEY = 'MYDzoelfaU0YL3AI79j8RDvILzoBCblmunLkd5YZ'
+API_KEY = ''
 # MISP_VERIFYCERT
 MISP_VERIFYCERT = True
 # pyMISP DEBUG
