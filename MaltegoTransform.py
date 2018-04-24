@@ -61,7 +61,7 @@ class MaltegoEntity(object):
 			
 	def returnEntity(self):
 		print "<Entity Type=\"" + str(self.entityType) + "\">";
-		print "<Value>" + str(self.value) + "</Value>";
+		print "<Value>" + u''.join(self.value).encode('utf-8').strip() + "</Value>";
 		print "<Weight>" + str(self.weight) + "</Weight>";
 		if (self.displayInformation is not None):
 			print "<DisplayInformation><Label Name=\"\" Type=\"text/html\"><![CDATA[" + str(self.displayInformation) + "]]></Label></DisplayInformation>";
