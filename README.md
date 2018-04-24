@@ -24,6 +24,7 @@ for i in misp_event2email.py misp_event2email-subject.py misp_event2hash.py misp
   * misp_email-subject2event.py: [MISP] Email subject to Event / Returns MISPEvent entities containing the corresponding Email subject attribute
   * misp_event2ip.py: [MISP] Event to IP attribute / Returns the IP attributes belonging to an event
   * misp_event2domain.py: [MISP] Event to Domain attribute / Returns Domain attributes belonging to an event
+  * misp_event2url.py: [MISP] Event to URL attribute / Returns URL attributes belonging to an event
   * misp_event2hash.py: [MISP] Event to Hash attribute / Returns Hash attributes belonging to an event
   * misp_event2email.py: [MISP] Event to Email address attribute / Returns Email address attributes belonging to an event
   * misp_event2email-subject.py: [MISP] Event to Email subject attribute / Returns Email subject attributes belonging to an event
