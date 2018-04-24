@@ -12,7 +12,7 @@ Set of Maltego transforms to inferface with a MISP instance
 - Create symbolic links to misp_domain2event.py and misp_event2domain.py in the same directory.
 ```
 for i in misp_email2event.py misp_email-subject2event.py misp_ip2event.py misp_hash2event.py ; do ln -s misp_domain2event.py $i; done
-for i in misp_event2email.py misp_event2email-subject.py misp_event2hash.py misp_event2ip.py ; do ln -s misp_event2domain.py $i; done
+for i in misp_event2email.py misp_event2email-subject.py misp_event2hash.py misp_event2ip.py misp_event2url.py ; do ln -s misp_event2domain.py $i; done
 ```
 
 - Import transforms in Maltego as follow (for instance):

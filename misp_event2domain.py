@@ -9,8 +9,8 @@ import sys
 from misp_util import *
 from pymisp import PyMISP
 
-type2attribute = {'domain':('domain','hostname'), 'hostname':('hostname'), 'hash':('md5','sha1','sha256') , 'ip':('ip-src','ip-dst'), 'email':('email-src','email-dst'), 'email-subject': ('email-subject')}
-argType2enType = {'domain':'maltego.Domain', 'hostname':'maltego.Domain', 'hash':'maltego.Hash', 'ip':'maltego.IPv4Address', 'email':'maltego.EmailAddress', 'email-subject': 'maltego.Phrase'}
+type2attribute = {'domain':('domain','hostname'), 'hostname':('hostname'), 'url':('url'), 'hash':('md5','sha1','sha256') , 'ip':('ip-src','ip-dst'), 'email':('email-src','email-dst'), 'email-subject': ('email-subject')}
+argType2enType = {'domain':'maltego.Domain', 'hostname':'maltego.Domain', 'url':'maltego.Url', 'hash':'maltego.Hash', 'ip':'maltego.IPv4Address', 'email':'maltego.EmailAddress', 'email-subject': 'maltego.Phrase'}
 filename_pipe_hash_type = ('filename|md5', 'filename|sha1', 'filename|sha256', 'malware-sample')
 
 if __name__ == '__main__':
@@ -27,10 +27,25 @@ if __name__ == '__main__':
                     if aType in filename_pipe_hash_type:
                         h = value.split('|')[1].strip()
                         me = MaltegoEntity(argType2enType[argType], h)
-                        mt.addEntityToMessage(me);   
+                        mt.addEntityToMessage(me)   
                     else:
                         me = MaltegoEntity(argType2enType[argType], value)
-		        mt.addEntityToMessage(me);
+                        mt.addEntityToMessage(me)
+
+            # support new MISP event Object
+            for obj in event['Event']['Object']:
+                for attribute in obj['Attribute']:
+                    value = attribute["value"]
+                    aType = attribute["type"]
+                    if aType in type2attribute[argType]:
+                        if aType in filename_pipe_hash_type:
+                            h = value.split('|')[1].strip()
+                            me = MaltegoEntity(argType2enType[argType], h)
+                            mt.addEntityToMessage(me) 
+                        else:
+                            me = MaltegoEntity(argType2enType[argType], value)
+                            mt.addEntityToMessage(me)
+
         except Exception as e:
 	       mt.addUIMessage("[ERROR]  " + str(e))
         mt.returnOutput()
