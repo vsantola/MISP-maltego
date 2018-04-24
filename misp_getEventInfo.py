@@ -8,23 +8,21 @@
 import sys
 from misp_util import *
 from pymisp import PyMISP
-import json
 
 if __name__ == '__main__':
-        m = init()
+        misp = init()
         mt = MaltegoTransform()
         event_id = sys.argv[1]
         try:
-            event = m.get_event(event_id)
-            event_json = event.json()
-            eid = event_json['Event']['id']
-            einfo = event_json['Event']['info']
-            eorgc = event_json['Event']['orgc']
-            me = MaltegoEntity('maltego.MISPEvent',eid);
+            event = misp.get_event(event_id)
+            eid = event['Event']['id']
+            einfo = event['Event']['info']
+            eorgc = event['Event']['Orgc']['name']
+            me = MaltegoEntity('maltego.MISPEvent', eid)
             me.addAdditionalFields('EventLink', 'EventLink', False, BASE_URL + '/events/view/' + eid )
             me.addAdditionalFields('Org', 'Org', False, eorgc)
-            me.addAdditionalFields('notes#', 'notes', False, eorgc + ": " + einfo)
-            mt.addEntityToMessage(me);
+            me.addAdditionalFields('notes#', 'notes', False, eorgc + ": " + str(einfo))
+            mt.addEntityToMessage(me)
         except Exception as e:
-	    mt.addUIMessage("[ERROR]  " + str(e))
+	       mt.addUIMessage("[ERROR]  " + str(e))
         mt.returnOutput()

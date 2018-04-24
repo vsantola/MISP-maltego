@@ -8,7 +8,6 @@
 import sys
 from misp_util import *
 from pymisp import PyMISP
-import json
 
 type2attribute = {'domain':('domain','hostname'), 'hostname':('hostname'), 'hash':('md5','sha1','sha256') , 'ip':('ip-src','ip-dst'), 'email':('email-src','email-dst'), 'email-subject': ('email-subject')}
 argType2enType = {'domain':'maltego.Domain', 'hostname':'maltego.Domain', 'hash':'maltego.Hash', 'ip':'maltego.IPv4Address', 'email':'maltego.EmailAddress', 'email-subject': 'maltego.Phrase'}
@@ -18,15 +17,14 @@ if __name__ == '__main__':
         event_id = sys.argv[1]
         argType = sys.argv[0].split('.')[0].split('2')[1] # misp_event2argType.py
         misp = init()
+        mt = MaltegoTransform()
         try:
             event = misp.get_event(event_id)
-            event_json = event.json()
-            mt = MaltegoTransform()
-	    for attribute in event_json['Event']["Attribute"]:
+            for attribute in event['Event']["Attribute"]:
                 value = attribute["value"]
-		aType = attribute["type"]
+                aType = attribute["type"]
                 if aType in type2attribute[argType]:
-		    if aType in filename_pipe_hash_type:
+                    if aType in filename_pipe_hash_type:
                         h = value.split('|')[1].strip()
                         me = MaltegoEntity(argType2enType[argType], h)
                         mt.addEntityToMessage(me);   
@@ -34,5 +32,5 @@ if __name__ == '__main__':
                         me = MaltegoEntity(argType2enType[argType], value)
 		        mt.addEntityToMessage(me);
         except Exception as e:
-	    mt.addUIMessage("[ERROR]  " + str(e))
+	       mt.addUIMessage("[ERROR]  " + str(e))
         mt.returnOutput()
